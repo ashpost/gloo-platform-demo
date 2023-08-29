@@ -1,15 +1,25 @@
-# Gloo Mesh Install
+# Gloo Platform Canary Upgrade
+This repo showcases how to install Gloo Platform and then perform a canary upgrade on the platform
 
-1. `./infra/1.create_cluster.sh` to create clusters. This can be replaced by cluster creation based on cloud
-2. `./infra/2.mesh_install.sh`
-3. `./infra/3.register_cluster.sh`
-4. `./infra/4.istio_install.sh`
-5. `./infra/create_root_trust.sh`
-6. `./apps/5.bookinfo_install.sh`
-7. `./apps/6.httpbin_install.sh`
-8.  `./apps/7.workspace_setup.sh`
-9.  `./apps/8.bookinfo_expose.sh`
-10. `./apps/setup_vd.sh`
-11. `./apps/httpbin_workspace.sh`
-12. `./apps/httpbin_expose.sh`
-13. `extauth/setup_apikey.sh` to setup API key authentication on httpbin workspace
+## Infrastructure Installation
+This command will create clusters, install gloo platform as well istio on workload clusters
+`./install_infra.sh` to create clusters.
+
+## App Installation
+To install bookinfo and httpbin apps
+`./install_apps.sh` to create clusters.
+
+## Istio Canary Upgrade
+Istio Canary Upgrade is a detailed 5 step process
+1. Install the new version of istio
+   ```./upgrade/1.step-install-new.sh```
+2. Make new version the active version using IstioLifeCycleManager
+   ```./upgrade/2.step-to-new-istio.sh```
+3. Move apps and gateways to the new control plane
+   ```./upgrade/3.step-move-apps.sh```
+4. Make new gateway, the active gateway
+    ```./upgrade/4.step-to-new-gws.sh```
+
+## Cleanup
+Once new version is up and running, remove the old control plane, gateways, istio operator etc
+```./upgrade/5.step-remove-old.sh```
