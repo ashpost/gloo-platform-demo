@@ -10,6 +10,9 @@ export CLUSTER1=cluster1
 export REMOTE_CONTEXT2=cluster2
 export CLUSTER2=cluster2
 
+
+export CA_REGION=ap-southeast-2
+
 export REPO=$GLOO_REPO_KEY_17
 export ISTIO_IMAGE=1.17.2-solo
 export REVISION=1-17-2

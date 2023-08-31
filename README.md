@@ -23,3 +23,47 @@ Istio Canary Upgrade is a detailed 5 step process
 ## Cleanup
 Once new version is up and running, remove the old control plane, gateways, istio operator etc
 ```./upgrade/5.step-remove-old.sh```
+
+
+# For AWS
+First setup kubeconfigs
+
+```
+kubectl config rename-context Administrator@mgmt.ap-southeast-2.eksctl.io mgmt
+kubectl config rename-context Administrator@cluster1.ap-southeast-2.eksctl.io cluster1
+kubectl config rename-context Administrator@cluster2.ap-southeast-2.eksctl.io cluster2
+```
+
+
+### [***OPTIONAL***] Only if clusters do not already exists
+
+`./infra/create_aws_clusters.sh`
+
+### Start installing the Gloo Platform 
+
+```./infra/2.mesh_install.sh```
+
+### Register both workload clusters
+
+```./infra/3.register_clusters.sh```
+
+### Install istio control plane
+
+```./infra/4.istio_install.sh```
+
+### Setup AWS LB Controller on Cluster 1
+
+```./infra/setup-lb-controller.sh```
+
+### Create ingress and servcie for ALB (*This will take some time*)
+
+```./infra/alb-service.sh```
+
+If you are provisioning NLB then use 
+
+`./infra/nlb-service.sh`
+
+### Finally Create Root Trust Policy
+
+```./infra/create_root_trust.sh```
+
