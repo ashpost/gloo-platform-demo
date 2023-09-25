@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set environment variables
-export GLOO_VERSION="2.3.12"
+export GLOO_VERSION="2.4"
 
 # Set Contexts
 export MGMT=mgmt
@@ -13,9 +13,9 @@ export CLUSTER2=cluster2
 
 export CA_REGION=ap-southeast-2
 
-export REPO=$GLOO_REPO_KEY_17
-export ISTIO_IMAGE=1.17.2-solo
-export REVISION=1-17-2
+export REPO=$GLOO_REPO_KEY
+export ISTIO_IMAGE=1.18.2-solo
+export REVISION=1-18-2
 
 # create_ns context namespace
 function create_ns () {
@@ -31,4 +31,17 @@ function display () {
     echo "###########################################################"
     echo " $@"
     echo "###########################################################"
+}
+
+wait_for_lb_address() {
+    local context=$1
+    local service=$2
+    local ns=$3
+    ip=""
+    while [ -z $ip ]; do
+        echo "Waiting for $service external IP ..."
+        ip=$(kubectl --context ${context} -n $ns get service/$service --output=jsonpath='{.status.loadBalancer}' | grep "ingress")
+        [ -z "$ip" ] && sleep 5
+    done
+    echo "Found $service external IP: ${ip}"
 }

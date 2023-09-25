@@ -11,20 +11,20 @@ function delete_clusters() {
     display "Deleting Cluster ${CLUSTER2}"
     eksctl delete cluster --name ${CLUSTER2} --region ${CA_REGION} --wait
     display "Deleting Cluster ${MGMT}"
-    eksctl delete cluster --name ${mgmt} --region ${CA_REGION} --wait
+    eksctl delete cluster --name ${MGMT} --region ${CA_REGION} --wait
 }
 
-kubectl delete ing gw-ingress -n istio-gateways  --context ${CLUSTER1} --wait
+#kubectl delete ing gw-ingress -n istio-gateways  --context ${CLUSTER1} --wait
 
-kubectl delete svc istio-ingressgateway -n istio-gateways --wait
+#kubectl delete svc istio-ingressgateway -n istio-gateways --wait
 
-display "Deleting iamserviceaccount"
-eksctl delete iamserviceaccount aws-load-balancer-controller --cluster ${CLUSTER1}
+#display "Deleting iamserviceaccount"
+#eksctl delete iamserviceaccount aws-load-balancer-controller --cluster ${CLUSTER1}
 
-POLICY_ARN=$(aws iam list-policies --region ${CA_REGION} --output table | grep ${CLUSTER1} | awk '{print $2}')
-display ${POLICY_ARN}
+#POLICY_ARN=$(aws iam list-policies --region ${CA_REGION} --output table | grep ${CLUSTER1} | awk '{print $2}')
+#display ${POLICY_ARN}
 # Detach Role
-aws iam delete-policy --policy-arn ${POLICY_ARN}
+#aws iam delete-policy --policy-arn ${POLICY_ARN}
 
 
 sleep 5

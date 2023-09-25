@@ -72,6 +72,7 @@ register_cluster
 export CLUSTER=$CLUSTER2
 register_cluster
 
+sleep 30
 # Check if clusters have been registered
 meshctl --kubecontext ${MGMT} check
 

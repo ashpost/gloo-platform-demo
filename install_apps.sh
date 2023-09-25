@@ -1,8 +1,13 @@
 #!/bin/bash
 
+# Set environment variables
+source env.sh
+# Get deployed istio revision
+export REVISION=$(kubectl get pod -L app=istiod -n istio-system --context $REMOTE_CONTEXT1 -o jsonpath='{.items[0].metadata.labels.istio\.io/rev}')
+display $REVISION
 
-cluster1ca=$(istioctl pc secrets deploy/istio-eastwestgateway-1-17-2 -n istio-gateways --context ${CLUSTER1} | grep ROOTCA | awk '{print $5}')
-cluster2ca=$(istioctl pc secrets deploy/istio-eastwestgateway-1-17-2 -n istio-gateways --context ${CLUSTER2} | grep ROOTCA | awk '{print $5}')
+cluster1ca=$(istioctl pc secrets deploy/istio-eastwestgateway-${REVISION} -n istio-gateways --context ${CLUSTER1} | grep ROOTCA | awk '{print $5}')
+cluster2ca=$(istioctl pc secrets deploy/istio-eastwestgateway-${REVISION} -n istio-gateways --context ${CLUSTER2} | grep ROOTCA | awk '{print $5}')
 
 if [[ $cluster1ca != $cluster2ca ]]; then
     display "ROOTCAs are not same; do something"

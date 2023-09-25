@@ -1,0 +1,16 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: ExternalService
+metadata:
+  name: argocd
+  namespace: istio-gateways
+spec:
+  hosts:
+  - "192.168.106.6.nip.io"
+  ports:
+  - name: http
+    number: 80
+    protocol: HTTP
+  - name: ui
+    number: 8090
+    protocol: HTTP
+  selector: {}
